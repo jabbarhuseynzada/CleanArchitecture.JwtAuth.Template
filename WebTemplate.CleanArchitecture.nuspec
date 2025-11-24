@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>CleanArchitecture.JwtAuth.Template</id>
+    <version>1.0.0</version>
+    <title>Clean Architecture Web API with JWT Auth</title>
+    <authors>Jabbar Huseynzada</authors>
+    <description>A production-ready .NET 9 Web API template with Clean Architecture, JWT Authentication with Refresh Tokens, CQRS with MediatR, PostgreSQL, Unit of Work, Soft Delete, Audit Logging, Caching (Redis/InMemory), Rate Limiting, Background Jobs (Hangfire), Response Compression, OpenTelemetry, and Health Checks.</description>
+    <releaseNotes>
+v1.0.0:
+- Clean Architecture with Domain, Application, Infrastructure, WebApi layers
+- JWT Authentication with refresh token rotation
+- CQRS pattern with MediatR
+- FluentValidation for request validation
+- Unit of Work pattern with transaction support
+- Soft Delete with automatic query filtering
+- Audit Logging (CreatedAt, CreatedBy, ModifiedAt, ModifiedBy, DeletedAt, DeletedBy)
+- Pagination (PagedRequest/PagedResult)
+- Caching with Redis or In-Memory support
+- Rate Limiting (fixed, sliding, token bucket, per-IP)
+- Background Jobs with Hangfire and PostgreSQL storage
+- Response Compression (Brotli/Gzip)
+- OpenTelemetry for distributed tracing and metrics
+- Serilog structured logging (console and file)
+- API versioning (URL, header, query string)
+- Global exception handling middleware
+- Health check endpoints (live, ready, detailed)
+- PostgreSQL with Entity Framework Core
+- Docker support with pgAdmin
+- Password reset with email verification
+    </releaseNotes>
+    <summary>Production-ready Clean Architecture Web API template with JWT auth, refresh tokens, caching, rate limiting, background jobs, and observability</summary>
+    <language>en-US</language>
+    <projectUrl>https://github.com/jabbarhuseynzada/CleanArchitecture.JwtAuth.Template</projectUrl>
+    <repository type="git" url="https://github.com/jabbarhuseynzada/CleanArchitecture.JwtAuth.Template.git" />
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>dotnet-new;templates;web;api;jwt;authentication;clean-architecture;cqrs;mediatr;postgresql;serilog;api-versioning;health-checks;fluentvalidation;refresh-tokens;rate-limiting;caching;redis;hangfire;opentelemetry;unit-of-work;soft-delete;audit-logging</tags>
+    <packageTypes>
+      <packageType name="Template" />
+    </packageTypes>
+  </metadata>
+  <files>
+    <file src=".\**\*" exclude=".\**\bin\**;.\**\obj\**;.\**\.vs\**;.\**\*.user;.\**\Migrations\**;.\*.nupkg;.\nupkg\**;.\logs\**" target="content" />
+  </files>
+</package>

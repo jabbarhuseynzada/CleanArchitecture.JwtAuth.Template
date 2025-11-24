@@ -1,0 +1,140 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Jabbar Huseynzada",
+  "classifications": ["Web", "API", "Clean Architecture", "JWT Auth", "Docker"],
+  "identity": "WebTemplate.CleanArchitecture.CSharp",
+  "name": "Clean Architecture Web API with JWT Auth",
+  "shortName": "cleanapi",
+  "description": "A .NET 9 Web API template with Clean Architecture, JWT Authentication, CQRS with MediatR, PostgreSQL, and Docker support",
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "sourceName": "WebTemplate",
+  "preferNameDirectory": true,
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net9.0",
+          "description": "Target .NET 9.0"
+        }
+      ],
+      "defaultValue": "net9.0",
+      "replaces": "net9.0"
+    },
+    "UseDocker": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include Docker and docker-compose files for containerized deployment",
+      "defaultValue": "true"
+    },
+    "DockerPostgres": {
+      "type": "parameter",
+      "datatype": "bool",
+      "description": "Include PostgreSQL container in docker-compose (set false if using local PostgreSQL)",
+      "defaultValue": "true"
+    },
+    "PostgresPassword": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "PostgreSQL password for docker-compose",
+      "defaultValue": "postgres123",
+      "replaces": "postgres123"
+    },
+    "JwtSecretKey": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "JWT Secret Key (minimum 32 characters)",
+      "defaultValue": "webtemplatewebtemplatewebtemplate",
+      "replaces": "webtemplatewebtemplatewebtemplate"
+    },
+    "AdminEmail": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "Default admin email address",
+      "defaultValue": "admin@webtemplate.com",
+      "replaces": "admin@webtemplate.com"
+    },
+    "AdminPassword": {
+      "type": "parameter",
+      "datatype": "text",
+      "description": "Default admin password",
+      "defaultValue": "Admin@123",
+      "replaces": "Admin@123"
+    }
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "exclude": [
+            "**/bin/**",
+            "**/obj/**",
+            "**/.vs/**",
+            "**/*.user",
+            "**/Migrations/**",
+            "**/nupkg/**",
+            "**/*.nupkg",
+            "**/*.nuspec",
+            "**/CleanArchitecture.JwtAuth.Template.csproj"
+          ]
+        },
+        {
+          "condition": "(!UseDocker)",
+          "exclude": [
+            "**/Dockerfile",
+            "**/docker-compose.yml",
+            "**/docker-compose.api-only.yml",
+            "**/.dockerignore"
+          ]
+        },
+        {
+          "condition": "(UseDocker && !DockerPostgres)",
+          "exclude": [
+            "**/docker-compose.yml"
+          ]
+        },
+        {
+          "condition": "(UseDocker && DockerPostgres)",
+          "exclude": [
+            "**/docker-compose.api-only.yml"
+          ]
+        }
+      ]
+    }
+  ],
+  "primaryOutputs": [
+    {
+      "path": "WebTemplate.sln"
+    }
+  ],
+  "postActions": [
+    {
+      "condition": "(OS != \"Windows_NT\")",
+      "description": "Make scripts executable",
+      "manualInstructions": [
+        {
+          "text": "Run 'chmod +x *.sh'"
+        }
+      ],
+      "actionId": "cb9a6cf3-4f5c-4860-b9d2-03a574959774",
+      "args": {
+        "+x": "*.sh"
+      },
+      "continueOnError": true
+    },
+    {
+      "description": "Display getting started instructions",
+      "manualInstructions": [
+        {
+          "text": "Your project is ready! See README.md for setup instructions."
+        }
+      ],
+      "actionId": "AC1156F7-BB77-4DB8-B28F-24EEBCCA1E5C"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  webtemplate-api:
+    build:
+      context: .
+      dockerfile: src/WebTemplate.WebApi/Dockerfile
+    container_name: webtemplate-api
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - CONNECTION_STRING=Host=webtemplate-db;Port=5432;Database=WebTemplateDb;Username=postgres;Password=postgres123
+      - JWT_SECRET_KEY=webtemplatewebtemplatewebtemplate
+      - JWT_ISSUER=WebTemplate.Api
+      - JWT_AUDIENCE=WebTemplate.Client
+      - JWT_EXPIRY_MINUTES=60
+      - JWT_REFRESH_TOKEN_EXPIRY_DAYS=7
+      - ADMIN_EMAIL=admin@webtemplate.com
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=Admin@123
+      - ADMIN_FIRSTNAME=System
+      - ADMIN_LASTNAME=Administrator
+      - CORS_ALLOWED_ORIGINS=http://localhost:5173,https://localhost:5173,http://localhost:3000
+    depends_on:
+      webtemplate-db:
+        condition: service_healthy
+    networks:
+      - webtemplate-network
+
+  webtemplate-db:
+    image: postgres:16-alpine
+    container_name: webtemplate-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+      - POSTGRES_DB=WebTemplateDb
+    volumes:
+      - webtemplate-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - webtemplate-network
+
+networks:
+  webtemplate-network:
+    driver: bridge
+
+volumes:
+  webtemplate-postgres-data:

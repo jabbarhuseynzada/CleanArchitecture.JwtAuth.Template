@@ -1,0 +1,55 @@
+version: '3.8'
+
+# Standalone PostgreSQL container for local development
+# Run with: docker-compose -f docker-compose.postgres.yml up -d
+# Connect from your local app using: Host=localhost;Port=5432;Database=WebTemplateDb;Username=postgres;Password=postgres123
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: webtemplate-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: WebTemplateDb
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - webtemplate-postgres-data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d WebTemplateDb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - webtemplate-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: webtemplate-pgadmin
+    restart: unless-stopped
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@webtemplate.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - webtemplate-pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - webtemplate-network
+
+networks:
+  webtemplate-network:
+    driver: bridge
+
+volumes:
+  webtemplate-postgres-data:
+  webtemplate-pgadmin-data:

@@ -57,21 +57,42 @@ src/
 
 ## Getting Started
 
+### Option 1: Run Everything with Docker (Recommended)
+
+The easiest way to get started - migrations and database seeding happen automatically:
+
 ```bash
-# Start PostgreSQL
+# Start database + API in Docker
+docker-compose up -d
+
+# View logs
+docker-compose logs -f webtemplate-api
+```
+
+### Option 2: Run Database in Docker + API Locally
+
+This is better for development since you can debug the API:
+
+```bash
+# Start PostgreSQL + PgAdmin
 docker-compose -f docker-compose.postgres.yml up -d
 
-# Run migrations
+# Run the app (migrations and seeding happen automatically on startup)
 cd src/YourProjectName.WebApi
-dotnet ef migrations add InitialCreate -p ../YourProjectName.Infrastructure
-dotnet ef database update
-
-# Run the app
 dotnet run
 ```
 
+**Note**: Automatic migrations are enabled in `Program.cs` line 324. The database tables and admin user will be created automatically on first run.
+
+### Accessible URLs:
 - **API**: http://localhost:5000
 - **Swagger**: http://localhost:5000/swagger
+- **PgAdmin**: http://localhost:5050 (admin@webtemplate.com / admin123)
+
+### Default Admin Account:
+- **Username**: admin
+- **Password**: Admin@123
+- **Email**: admin@webtemplate.com
 
 ---
 
@@ -372,6 +393,76 @@ When adding a new feature, follow this order:
 | `JWT_EXPIRY_MINUTES` | Token expiration (default: 60) |
 | `ENABLE_HANGFIRE` | Enable background jobs |
 | `REDIS_CONNECTION_STRING` | Redis for caching (optional) |
+
+---
+
+## Troubleshooting
+
+### Database Connection Issues
+
+If you encounter "password authentication failed" errors:
+
+1. **Check password consistency**: Ensure all configuration files use the same password:
+   - `.env` file: `Password=postgres123`
+   - `docker-compose.yml`: `POSTGRES_PASSWORD=postgres123`
+   - `docker-compose.postgres.yml`: `POSTGRES_PASSWORD=postgres123`
+   - `docker-compose.api-only.yml`: `Password=postgres123`
+
+2. **Recreate database with fresh password**:
+   ```bash
+   # Stop and remove all containers and volumes
+   docker-compose down -v
+
+   # Start fresh
+   docker-compose up -d
+   ```
+
+### Migration Issues
+
+If tables are not being created:
+
+1. **Verify automatic migrations are enabled** in `src/YourProjectName.WebApi/Program.cs` (line 324):
+   ```csharp
+   await context.Database.MigrateAsync(); // Should NOT be commented
+   ```
+
+2. **Check if migrations exist**:
+   ```bash
+   ls src/YourProjectName.Infrastructure/Migrations/
+   ```
+
+3. **Create migration if missing**:
+   ```bash
+   cd src/YourProjectName.WebApi
+   dotnet ef migrations add InitialCreate -p ../YourProjectName.Infrastructure
+   ```
+
+### Port Already in Use
+
+If port 5000 or 5432 is already in use:
+
+```bash
+# Find and kill the process using the port (Windows)
+netstat -ano | findstr :5000
+taskkill /PID <PID> /F
+
+# Or change ports in docker-compose.yml
+ports:
+  - "5100:8080"  # Change 5000 to 5100
+  - "5433:5432"  # Change 5432 to 5433
+```
+
+### Clean Start
+
+For a completely fresh start:
+
+```bash
+# Remove all containers, volumes, and images
+docker-compose down -v --rmi all
+
+# Rebuild and start
+docker-compose up -d --build
+```
 
 ---
 

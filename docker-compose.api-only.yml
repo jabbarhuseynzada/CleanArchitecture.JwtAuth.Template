@@ -15,7 +15,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       # Update this connection string to point to your local PostgreSQL
-      - CONNECTION_STRING=Host=host.docker.internal;Port=5432;Database=WebTemplateDb;Username=postgres;Password=admin
+      - CONNECTION_STRING=Host=host.docker.internal;Port=5432;Database=WebTemplateDb;Username=postgres;Password=postgres123
       - JWT_SECRET_KEY=webtemplatewebtemplatewebtemplate
       - JWT_ISSUER=WebTemplate.Api
       - JWT_AUDIENCE=WebTemplate.Client

@@ -321,7 +321,7 @@ try
         var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
 
         // Apply migrations (optional - uncomment if you want auto-migration)
-        // await context.Database.MigrateAsync();
+        await context.Database.MigrateAsync();
 
         // Seed roles first
         await DbSeeder.SeedRolesAsync(context);

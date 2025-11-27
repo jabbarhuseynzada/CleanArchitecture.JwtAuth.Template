@@ -83,6 +83,11 @@ dotnet run
 ```
 
 **Note**: Automatic migrations are enabled in `Program.cs` line 324. The database tables and admin user will be created automatically on first run.
+  **Create migration if missing**:
+   ```bash
+   cd src/YourProjectName.WebApi
+   dotnet ef migrations add InitialCreate -p ../YourProjectName.Infrastructure
+   ```
 
 ### Accessible URLs:
 - **API**: http://localhost:5000

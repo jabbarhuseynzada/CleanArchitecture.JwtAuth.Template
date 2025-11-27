@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.0.1</PackageVersion>
     <PackageId>CleanArchitecture.JwtAuth.Template</PackageId>
     <Title>Clean Architecture Web API with JWT Auth</Title>
     <Authors>Jabbar Huseynzada</Authors>
@@ -27,7 +27,10 @@
     <Content Include="LICENSE" />
     <Content Include="docker-compose.yml" />
     <Content Include="docker-compose.api-only.yml" />
+    <Content Include="docker-compose.postgres.yml" />
     <Content Include=".dockerignore" />
+    <Content Include="DOCKER-GUIDE.md" />
+    <Content Include="CHANGELOG.md" />
     <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
